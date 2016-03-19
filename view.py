@@ -5,119 +5,129 @@ by Kirill"""
 import decimal
 import datetime
 from accounting import Accounting
+from user import check_money
 
 
 def enter_day():
-    """enter date creation of payment"""
+    """
+    enter date creation of payment
+    :return:date
+    """
     date = 0
-    while date <= 0 or date >= 31:
-        """enter date"""
+    while not 1 <= date <= 31:
+        # enter date
         date = input('Enter date: ')
         try:
-            """try assign"""
+            # try assign
             date = int(date)
         except ValueError:
-            """exception
-            incorrect date"""
+            # exception
+            # incorrect date
             date = 0
     return date
 
 
 def enter_month():
-    """enter month of creation"""
+    """
+    enter month of creation
+    :return: month
+    """
     month = 0
-    while month <= 0 or month > 12:
-        """enter month"""
+    while not 1 <= month <= 12:
+        # enter month
         month = input('Enter month: ')
         try:
-            """try assign"""
+            # try assign
             month = int(month)
         except ValueError:
-            """exception
-            incorrect month"""
+            # exception
+            # incorrect month
             month = 0
     return month
 
 
 def enter_year():
-    """enter year of creation"""
+    """
+    enter year of creation
+    :return: year
+    """
     year = -1
     while year < 0:
-        """enter year"""
+        # enter year
         year = input('Enter year: ')
         try:
-            """try assign"""
+            # try assign
             year = int(year)
         except ValueError:
-            """exception"""
-            year = 0
+            # exception
+            year = -1
     return year
 
 
 def enter_desc():
-    """enter description of payment"""
+    """
+    enter description of payment
+    :return: description of payment
+    """
     return input("Enter description of accounting: ")
 
 
 def enter_sum():
-    """enter summa of payment"""
-    import re
-
-    sum = -1.0
-    while sum < 0:
-        """enter summa"""
-        sum = input('Enter summa: ')
+    """
+    enter sum of payment
+    :return:sum
+    """
+    sum = None
+    while sum is None:
+        # enter sum
+        sum = input('Enter sum: ')
         try:
-            """try assign"""
-            if re.match('^\d+?\.\d\d$', sum) is None:
-                # if precision more then 2
-                raise ValueError
+            # try assign
+            check_money(sum)
             sum = decimal.Decimal(sum)
         except ValueError:
-            """exception
-            incorrect summa"""
-            sum = -1.0
+            # exception
+            # incorrect sum
+            sum = None
     return sum
 
 
-def is_profit():
-    """enter is payment profit"""
-    inp = input('Enter Y if accounting is profit: ')
-    if inp is 'Y':
-        """it is profit"""
-        return True
-    """it is consumption"""
-    return False
-
-
 def input_accounting():
-    """input accounting"""
+    """
+    input accounting
+    :return: accounting.Accounting
+    """
     account = Accounting()
     while True:
-        """enter date"""
+        # enter date
         try:
             account.set_datetime(datetime.datetime(enter_year(),
                                  enter_month(), enter_day(), 0, 0))
             break
         except ValueError:
             pass
-    """set description"""
+    # set description
     account.set_description(enter_desc())
-    """set precesion"""
-    decimal.getcontext().prec = 2
-    """set summa of payment"""
+    # set summa of payment
     account.set_sum(enter_sum())
-    """set profit/consumption"""
-    if is_profit():
-        account.set_profit()
-    else:
-        account.set_consumption()
-    """return result"""
+    # return result
     return account
 
 
+def print_user_info(user):
+    """
+    :param user: instance of user.User
+    :return:nothing
+    """
+    print('User has %.2f' % user.get_money())
+
+
 def print_payments(payment_list):
-    """print head of a result table"""
+    """
+    print all payments in payment_list
+    :param payment_list: all payments in list
+    :return: nothing
+    """
     print('%-25s %-20s %-8s %-15s' %
           ("Date     ", "Description   ", "Sum    ", "Profit (True/False)"))
     """print each payment from list of payments"""
@@ -128,7 +138,11 @@ def print_payments(payment_list):
 
 
 def menu():
-    """input a key to choose your next action"""
+    """
+    draws menu
+    :return: pressed key
+    """
+    # input a key to choose your next action
     key = input(""" Press:
                 1 - to view the list of payments
                 2 - to append new payment
