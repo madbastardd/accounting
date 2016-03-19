@@ -3,66 +3,77 @@ import decimal
 
 
 class Accounting:
-    """class includes date and time, when accounting was created,
-    sum of payment,
-    type of payment (profit/consumption),
-    and description of payment"""
+    """
+    class includes date and time, when accounting was created,
+    sum of payment,,
+    and description of payment
+    """
     def __init__(self):
-        """constructor of payment
-        set all values to None"""
-        self.__datetime = None
-        self.__sum = None
-        self.__desc = None
-        self.__isprofit = None
+        """
+        constructor of payment
+        set all values to None
+        :return: nothing
+        """
+        self._datetime = None
+        self._sum = None
+        self._desc = None
 
-    def set_datetime(self, _datetime):
-        """set datetime of payment
-        _datetime can be only type datetime
-        return nothing"""
-        if type(_datetime) is not datetime.datetime:
-            raise TypeError("Incorrect type of variable _datetime")
-        self.__datetime = _datetime
+    def set_datetime(self, date_time):
+        """
+        set datetime of payment
+        :param date_time: date-time creation, can be only type datetime
+        :return: nothing
+        """
+        if not isinstance(date_time, datetime.datetime):
+            raise TypeError("Incorrect type of variable date_time")
+        self._datetime = date_time
 
-    def set_sum(self, _sum):
-        """set sum of payment
-        _sum must be decimal
-        return nothing"""
-        if type(_sum) is not decimal.Decimal:
-            raise TypeError("Incorrect type of variable _sum")
-        self.__sum = _sum
+    def set_sum(self, sum):
+        """
+        set sum of payment
+        :param sum: sum of payment
+        :return: nothing
+        """
+        from user import check_money
+        check_money(sum)
+        self._sum = decimal.Decimal("%.2f" % sum)
 
-    def set_description(self, _desc):
-        """set description of payment
-        _desc must be string
-        return nothing"""
-        if type(_desc) is not str:
+    def set_description(self, desc):
+        """
+        set description of payment
+        :param desc: description of payment, must be string
+        :return:nothing
+        """
+        if not isinstance(desc, str):
             raise TypeError("Incorrect type of variable _desc")
-        self.__desc = _desc
-
-    def set_profit(self):
-        """set profit payment type"""
-        self.__isprofit = True
-
-    def set_consumption(self):
-        """set consumption payment type"""
-        self.__isprofit = False
+        self._desc = desc
 
     def get_datetime(self):
-        """returns datetime"""
-        return self.__datetime
+        """
+        :return: datetime of creation
+        """
+        return self._datetime
 
     def get_sum(self):
-        """return sum"""
-        return self.__sum
+        """
+        :return:sum of payment
+        """
+        return self._sum
 
     def get_description(self):
-        """return description of profit"""
-        return self.__desc
+        """
+        :return:description of payment
+        """
+        return self._desc
 
     def is_profit(self):
-        """return true, if payment is profit"""
-        return self.__isprofit
+        """
+        :return: true, if payment is profit
+        """
+        return self._sum > 0
 
     def is_consumption(self):
-        """return true, if payment is consumption"""
-        return not self.__isprofit
+        """
+        :return: true, if payment is consumption
+        """
+        return self._sum < 0
