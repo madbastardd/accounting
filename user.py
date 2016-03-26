@@ -47,7 +47,7 @@ class User:
         """
         if not isinstance(payment, accounting.Accounting):
             # incorrect type
-            raise ValueError("Incorrect type of variable payment")
+            raise TypeError("Incorrect type of variable payment")
         self._payment_list.append(payment)
         self._money += payment.get_sum()
 
