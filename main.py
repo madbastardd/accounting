@@ -22,5 +22,4 @@ def main():
             print("You've entered incorrect value")
 
 
-decimal.getcontext().prec = 2
 main()
