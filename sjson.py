@@ -38,22 +38,23 @@ class UserEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 
 
-def write(obj):
+def write(obj, fname='info.json'):
     """
-    serialize user object
+    serialize user object in JSON
     :param obj: class User to serialize
+    :param fname: file name
     :return: nothing
     """
     if not isinstance(obj, user.User):
         # obj is not User
         raise ValueError('Incorrect type of variable obj')
-    with open('info.json', 'wt') as file:
-        json.dump(obj, file, cls=UserEncoder)
+    with open(fname, 'wt') as file:
+        json.dump(obj, file, cls=UserEncoder, indent=4)
 
 
 def encode_dict(dict):
     """
-    decodes user
+    decodes user from dictionary
     :param dict: decoded user
     :return: new user
     """
@@ -79,19 +80,18 @@ def encode_dict(dict):
     return ret_user
 
 
-def read():
+def read(fname='info.json'):
     """
-    read from file object
+    read from JSON file object
+    :param fname: file name
     :return: new User object or None
     """
-    dict = None
     try:
-        with open('info.json', 'rt') as file:
+        with open(fname, 'rt') as file:
             # try load
-            dict = json.load(file)
+            # and return user
+            return encode_dict(json.load(file))
     except (OSError, ValueError):
-        # file not found, return None
+        # file not found or incorrect value,
+        # return None
         return None
-
-    # return user
-    return encode_dict(dict)
