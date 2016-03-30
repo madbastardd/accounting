@@ -1,6 +1,25 @@
 import datetime
 import decimal
 
+def check_money(money):
+    """
+    :param money: check money
+    if money has more then two number after decimal point -
+    raise ValueError
+    :return:nothing
+    """
+    # check type
+    decimal.Decimal(money)
+    try:
+        fractional = str(money).split('.')[1]
+        if len(fractional) > 2:
+            # fractional part has more then two numbers after decimal point
+            raise ValueError("Two numbers are required " +
+                             "after decimal point in variable _money")
+    except IndexError:
+        # no fractional part
+        pass
+
 
 class Accounting:
     """
@@ -34,7 +53,6 @@ class Accounting:
         :param sum: sum of payment
         :return: nothing
         """
-        from user import check_money
         check_money(sum)
         self._sum = decimal.Decimal("%.2f" % sum)
 

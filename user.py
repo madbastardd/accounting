@@ -2,26 +2,6 @@ import decimal
 import accounting
 
 
-def check_money(money):
-    """
-    :param money: check money
-    if money has more then two number after decimal point -
-    raise ValueError
-    :return:nothing
-    """
-    # check type
-    decimal.Decimal(money)
-    try:
-        fractional = str(money).split('.')[1]
-        if len(fractional) > 2:
-            # fractional part has more then two numbers after decimal point
-            raise ValueError("Two numbers are required " +
-                             "after decimal point in variable _money")
-    except IndexError:
-        # no fractional part
-        pass
-
-
 class User:
     """
     contains information about
@@ -36,7 +16,7 @@ class User:
         """
         self._payment_list = []
         # checks _money
-        check_money(_money)
+        accounting.check_money(_money)
         self._money = decimal.Decimal("%.2f" % _money)
 
     def add_payment(self, payment):
@@ -71,7 +51,7 @@ class User:
         :return: nothing
         """
         # check add_money
-        check_money(add_money)
+        accounting.check_money(add_money)
         self._money += decimal.Decimal("%.2f" % add_money)
 
     def set_money(self, new_money):
@@ -81,7 +61,7 @@ class User:
         :return: nothing
         """
         # check new_money
-        check_money(new_money)
+        accounting.check_money(new_money)
         self._money = decimal.Decimal("%.2f" % new_money)
 
     def clear_payments(self):
