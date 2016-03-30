@@ -2,7 +2,7 @@
 
 >>> import datetime
 
->>> from decimal import *
+>>> from decimal import Decimal
 
 >>> from accounting import Accounting
 
@@ -15,15 +15,15 @@ datetime.datetime(2016, 3, 10, 19, 53, 42)
 >>> accounting.set_datetime('we hate rules')
 Traceback (most recent call last):
         ...
-TypeError: Incorrect type of variable _datetime
+TypeError: Incorrect type of variable date_time
 >>> accounting.set_sum(Decimal(10))
 
 >>> accounting.get_sum()
-Decimal('10')
+Decimal('10.00')
 >>> accounting.set_sum("17")
 Traceback (most recent call last):
         ...
-TypeError: Incorrect type of variable _sum
+TypeError: float argument required, not str
 >>> accounting.set_description('description')
 
 >>> accounting.get_description()
@@ -32,14 +32,10 @@ TypeError: Incorrect type of variable _sum
 Traceback (most recent call last):
         ...
 TypeError: Incorrect type of variable _desc
->>> accounting.set_profit()
-
 >>> accounting.is_profit()
 True
->>> accounting.set_consumption()
-
 >>> accounting.is_consumption()
-True
+False
 """
 
 if __name__ == "__main__":
