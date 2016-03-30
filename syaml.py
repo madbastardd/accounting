@@ -1,7 +1,6 @@
 """module that serialize
 user.User in Yaml and deserialize
 user.User from file"""
-
 import yaml
 import user
 
@@ -18,6 +17,7 @@ def write(obj, fname='info.yaml'):
         raise ValueError('Incorrect type of variable obj')
     with open(fname, 'wt') as file:
         yaml.dump(obj, file)
+
 
 def read(fname='info.yaml'):
     """
