@@ -146,7 +146,8 @@ def menu():
     key = input(""" Press:
                 1 - to view the list of payments
                 2 - to append new payment
-                3 - to exit
+                3 - clear all payments
+                4 - to exit
                 """)
     """return result"""
     return key
