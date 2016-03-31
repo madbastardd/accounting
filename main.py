@@ -1,6 +1,5 @@
 import view
 import user
-import decimal
 import sjson
 import spickle
 import sxml
@@ -16,18 +15,25 @@ def choose_type_ser(fname="defaults.cfg"):
     :param fname: configure file name
     :return: functions read/write
     """
+    # get configure file
     parser = configparser.ConfigParser()
-    parser.read('defaults.cfg')
+    parser.read(fname)
+    # get type of serialization
     type = parser['serialization']['type']
-    if (type == 'json'):
+    if type == 'json':
+        # JSON
         return sjson.read, sjson.write
-    elif (type == 'xml'):
+    elif type == 'xml':
+        # XML
         return sxml.read, sxml.write
-    elif (type == 'pickle'):
+    elif type == 'pickle':
+        # pickle
         return spickle.read, spickle.write
-    elif (type == 'yaml'):
+    elif type == 'yaml':
+        # YAML
         return syaml.read, syaml.write
     else:
+        # unknown type
         raise AttributeError('Incorrect serialization type')
 
 
@@ -54,7 +60,7 @@ def main():
 
 read, write = choose_type_ser()
 main_user = read()
-if (main_user == None):
+if main_user is None:
     main_user = user.User(0.00)
 main()
 write(main_user)

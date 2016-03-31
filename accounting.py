@@ -1,6 +1,7 @@
 import datetime
 import decimal
 
+
 def check_money(money):
     """
     :param money: check money
