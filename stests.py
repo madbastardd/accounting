@@ -5,9 +5,10 @@ for testing serialization methods
 import unittest
 import user
 import accounting
-import stringio
-import syaml
 import sjson
+import yaml
+import pickle
+import json
 import datetime
 
 
@@ -26,17 +27,45 @@ class TestSerialization(unittest.TestCase):
         return usr
 
     def test_yaml(self):
-        syaml.write(self.create_user())
-        serial_usr = stringio.readToStringIO()
-        serial_usr.seek(0)
-        self.assertEqual(serial_usr.readline(), '!!python/object:user.User\n')
+        """
+        test yaml serialization
+        :return: nothing
+        """
+
+        obj = self.create_user()
+        stringIO = yaml.dump(obj)
+        obj1 = yaml.load(stringIO)
+        for p1, p2 in zip(obj.get_payment_list(), obj1.get_payment_list()):
+            self.assertEqual(p1.get_sum(), p2.get_sum())
+            self.assertEqual(p1.get_description(), p2.get_description())
+        self.assertEqual(obj.get_money(), obj1.get_money())
 
     def test_json(self):
-        sjson.write(self.create_user())
-        serial_usr = stringio.readToStringIO('info.json')
-        serial_usr.seek(0)
-        self.assertEqual(serial_usr.readline(), '{\n')
+        """
+        test json serialization
+        :return: nothing
+        """
+        obj = self.create_user()
+        stringIO = json.dumps(obj, cls=sjson.UserEncoder)
+        obj1 = sjson.encode_dict(json.loads(stringIO))
+        for p1, p2 in zip(obj.get_payment_list(), obj1.get_payment_list()):
+            self.assertEqual(p1.get_sum(), p2.get_sum())
+            self.assertEqual(p1.get_description(), p2.get_description())
+        self.assertEqual(obj.get_money(), obj1.get_money())
 
+    def test_pickle(self):
+        """
+        test pickle serialization
+        :return: nothing
+        """
+        obj = self.create_user()
+        stringIO = pickle.dumps(obj)
+        obj1 = pickle.loads(stringIO)
+        for p1, p2 in zip(obj.get_payment_list(), obj1.get_payment_list()):
+            self.assertEqual(p1.get_sum(), p2.get_sum())
+            self.assertEqual(p1.get_description(), p2.get_description())
+        self.assertEqual(obj.get_money(), obj1.get_money())
+        # self.assertEqual(obj, obj1)
 
 if __name__ == '__main__':
     unittest.main()
