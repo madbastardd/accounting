@@ -1,15 +1,15 @@
-import view
-import user
-import sjson
-import spickle
-import sxml
-import syaml
+import view.view as module_view
+from model.user import User
+from serialization.sjson import read as json_read, write as json_write
+from serialization.spickle import read as pickle_read, write as pickle_write
+from serialization.sxml import read as xml_read, write as xml_write
+from serialization.syaml import read as yaml_read, write as yaml_write
 import configparser
 
 main_user = None
 
 
-def choose_type_ser(fname="defaults.cfg"):
+def choose_type_ser(fname="data/defaults.cfg"):
     """
     choose type of serialization
     :param fname: configure file name
@@ -22,16 +22,16 @@ def choose_type_ser(fname="defaults.cfg"):
     type = parser['serialization']['type']
     if type == 'json':
         # JSON
-        return sjson.read, sjson.write
+        return json_read, json_write
     elif type == 'xml':
         # XML
-        return sxml.read, sxml.write
+        return xml_read, xml_write
     elif type == 'pickle':
         # pickle
-        return spickle.read, spickle.write
+        return pickle_read, pickle_write
     elif type == 'yaml':
         # YAML
-        return syaml.read, syaml.write
+        return yaml_read, yaml_write
     else:
         # unknown type
         raise AttributeError('Incorrect serialization type')
@@ -41,13 +41,13 @@ def main():
     # user declaration
     # menu
     while True:
-        key = view.menu()
+        key = module_view.menu()
         # if statement to check what menu item was chosen
         if key == '1':
-            view.print_user_info(main_user)
-            view.print_payments(main_user.get_payment_list())
+            module_view.print_user_info(main_user)
+            module_view.print_payments(main_user.get_payment_list())
         elif key == '2':
-            account = view.input_accounting()
+            account = module_view.input_accounting()
             main_user.add_payment(account)
         elif key == '3':
             main_user.clear_payments()
@@ -61,6 +61,6 @@ def main():
 read, write = choose_type_ser()
 main_user = read()
 if main_user is None:
-    main_user = user.User(0.00)
+    main_user = User(0.00)
 main()
 write(main_user)
