@@ -2,9 +2,9 @@
 user.User in XML and deserialize
 user.User from file"""
 
-import user
+from model.user import User
 import datetime
-import accounting
+from model.accounting import Accounting
 import decimal
 from xml.etree.ElementTree import Element, SubElement
 from xml.etree import ElementTree
@@ -59,13 +59,13 @@ def parse_xml(tree):
     # get root
     root = tree.getroot()
     # creates new user
-    ret_user = user.User()
+    ret_user = User()
     # set his money
     ret_user.set_money(decimal.Decimal(root.attrib['money']))
 
     for account in root[0]:
         # create new account
-        new_account = accounting.Accounting()
+        new_account = Accounting()
         # set its description
         new_account.set_description(account.attrib['description'])
         # set new sum
@@ -84,21 +84,21 @@ def parse_xml(tree):
     return ret_user
 
 
-def write(obj, fname='info.xml'):
+def write(obj, fname='data/info.xml'):
     """
     serialize user object in XML
     :param obj: class User to serialize
     :param fname: file name
     :return: nothing
     """
-    if not isinstance(obj, user.User):
+    if not isinstance(obj, User):
         # obj is not User
         raise ValueError('Incorrect type of variable obj')
     with open(fname, "wt") as file:
         file.write(prettify(create_xml(obj)))
 
 
-def read(fname='info.xml'):
+def read(fname='data/info.xml'):
     """
     deserialize user object in XML
     :param fname: file name

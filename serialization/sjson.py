@@ -3,9 +3,9 @@ user.User in JSON and deserialize
 user.User from file"""
 
 import json
-import user
+from model.user import User
 import datetime
-import accounting
+from model.accounting import Accounting
 import decimal
 
 
@@ -17,11 +17,11 @@ class UserEncoder(json.JSONEncoder):
         """
         overriding method
         """
-        if isinstance(o, user.User):
+        if isinstance(o, User):
             # user object
             return {"money": o.get_money(),
                     "payment list": tuple(o.get_payment_list())}
-        if isinstance(o, accounting.Accounting):
+        if isinstance(o, Accounting):
             # accounting object
             return {"datetime": o.get_datetime(),
                     "description": o.get_description(),
@@ -38,14 +38,14 @@ class UserEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 
 
-def write(obj, fname='info.json'):
+def write(obj, fname='data/info.json'):
     """
     serialize user object in JSON
     :param obj: class User to serialize
     :param fname: file name
     :return: nothing
     """
-    if not isinstance(obj, user.User):
+    if not isinstance(obj, User):
         # obj is not User
         raise ValueError('Incorrect type of variable obj')
     with open(fname, 'wt') as file:
@@ -59,12 +59,12 @@ def encode_dict(dict):
     :return: new user
     """
     # create new user
-    ret_user = user.User()
+    ret_user = User()
     # set his money
     ret_user.set_money(decimal.Decimal(dict['money']))
     for account in dict['payment list']:
         # set new accounting
-        tmp_account = accounting.Accounting()
+        tmp_account = Accounting()
         date = account['datetime']
         # set datetime
         tmp_account.set_datetime(datetime.datetime(date['year'],
@@ -80,7 +80,7 @@ def encode_dict(dict):
     return ret_user
 
 
-def read(fname='info.json'):
+def read(fname='data/info.json'):
     """
     read from JSON file object
     :param fname: file name

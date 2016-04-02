@@ -1,35 +1,36 @@
 """module that serialize
-user.User in Yaml and deserialize
+user.User in Pickle and deserialize
 user.User from file"""
-import yaml
-import user
+
+import pickle
+from model.user import User
 
 
-def write(obj, fname='info.yaml'):
+def write(obj, fname='data/info.pickle'):
     """
-    serialize user object in Yaml
+    serialize user object in Pickle
     :param obj: class User to serialize
     :param fname: file name
     :return: nothing
     """
-    if not isinstance(obj, user.User):
+    if not isinstance(obj, User):
         # obj is not User
         raise ValueError('Incorrect type of variable obj')
-    with open(fname, 'wt') as file:
-        yaml.dump(obj, file)
+    with open(fname, 'wb') as file:
+        pickle.dump(obj, file)
 
 
-def read(fname='info.yaml'):
+def read(fname='data/info.pickle'):
     """
-    read from Yaml file object
+    read from Pickle file object
     :param fname: file name
     :return: new User object or None
     """
     try:
-        with open(fname, 'rt') as file:
+        with open(fname, 'rb') as file:
             # try load
             # and return user
-            return yaml.load(file)
+            return pickle.load(file)
     except (OSError, ValueError):
         # file not found or incorrect value,
         # return None

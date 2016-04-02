@@ -4,7 +4,7 @@
 
 >>> from decimal import Decimal
 
->>> from accounting import Accounting
+>>> from model.accounting import Accounting
 
 >>> accounting = Accounting()
 
@@ -23,7 +23,7 @@ Decimal('10.00')
 >>> accounting.set_sum("17")
 Traceback (most recent call last):
         ...
-TypeError: float argument required, not str
+TypeError: a float is required
 >>> accounting.set_description('description')
 
 >>> accounting.get_description()

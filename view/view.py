@@ -4,7 +4,7 @@ by Kirill"""
 
 import decimal
 import datetime
-from accounting import Accounting, check_money
+from model.accounting import Accounting, check_money
 
 
 def enter_day():

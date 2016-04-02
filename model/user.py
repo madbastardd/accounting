@@ -1,5 +1,5 @@
 import decimal
-import accounting
+from model.accounting import Accounting, check_money
 
 
 class User:
@@ -16,7 +16,7 @@ class User:
         """
         self._payment_list = []
         # checks _money
-        accounting.check_money(_money)
+        check_money(_money)
         self._money = decimal.Decimal("%.2f" % _money)
 
     def add_payment(self, payment):
@@ -25,7 +25,7 @@ class User:
         :param payment: payment to add (accounting.Accounting)
         :return: nothing
         """
-        if not isinstance(payment, accounting.Accounting):
+        if not isinstance(payment, Accounting):
             # incorrect type
             raise TypeError("Incorrect type of variable payment")
         self._payment_list.append(payment)
@@ -51,7 +51,7 @@ class User:
         :return: nothing
         """
         # check add_money
-        accounting.check_money(add_money)
+        check_money(add_money)
         self._money += decimal.Decimal("%.2f" % add_money)
 
     def set_money(self, new_money):
@@ -61,7 +61,7 @@ class User:
         :return: nothing
         """
         # check new_money
-        accounting.check_money(new_money)
+        check_money(new_money)
         self._money = decimal.Decimal("%.2f" % new_money)
 
     def clear_payments(self):
