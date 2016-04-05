@@ -5,7 +5,7 @@ for testing serialization methods
 import unittest
 from model.user import User
 from model.accounting import Accounting
-from serialization.sjson import UserEncoder
+from serialization.sjson import UserEncoder, encode_dict
 import yaml
 import json
 import pickle
@@ -22,7 +22,7 @@ class TestSerialization(unittest.TestCase):
         acc.set_datetime(datetime.datetime(2016, 3, 27, 0, 0))
         acc.set_description('desc')
         acc.set_sum(17.00)
-        usr = user.User()
+        usr = User()
         usr.add_payment(acc)
         return usr
 
@@ -47,7 +47,7 @@ class TestSerialization(unittest.TestCase):
         """
         obj = self.create_user()
         stringIO = json.dumps(obj, cls=UserEncoder)
-        obj1 = sjson.encode_dict(json.loads(stringIO))
+        obj1 = encode_dict(json.loads(stringIO))
         for p1, p2 in zip(obj.get_payment_list(), obj1.get_payment_list()):
             self.assertEqual(p1.get_sum(), p2.get_sum())
             self.assertEqual(p1.get_description(), p2.get_description())
