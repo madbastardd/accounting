@@ -129,11 +129,9 @@ def print_payments(payment_list):
     """
     print('%-25s %-20s %-8s %-15s' %
           ("Date     ", "Description   ", "Sum    ", "Profit (True/False)"))
-    """print each payment from list of payments"""
+    # print each payment from list of payments
     for payment in payment_list:
-        info = (payment.get_datetime(), payment.get_description()[:15],
-                payment.get_sum(), payment.is_profit())
-        print('%-25s %-20s %-8.2f %-15s' % info)
+        print('{0}'.format(payment))
 
 
 def menu():
@@ -148,5 +146,5 @@ def menu():
                 3 - clear all payments
                 4 - to exit
                 """)
-    """return result"""
+    # return result
     return key

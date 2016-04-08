@@ -38,6 +38,65 @@ class Accounting:
         self._sum = None
         self._desc = None
 
+    def __format__(self, format_spec):
+        """
+        returns formatted string
+        :param format_spec: format specifier
+        :return: formatted string
+        """
+        info = (self.get_datetime(), self.get_description()[:15],
+                self.get_sum(), self.is_profit())
+        return '%-25s %-20s %-8.2f %-15s' % info
+
+    def __bool__(self):
+        """
+        return True if it is profit, else - False
+        :return:True if it is profit
+        """
+        return self._sum > 0
+
+    def __add__(self, other):
+        """
+        add money of accountings
+        :param other:decimal.Decimal or accounting
+        :return:sum
+        """
+        if isinstance(other, decimal.Decimal):
+            return self._sum + other
+        elif isinstance(other, Accounting):
+            return self._sum + other._sum
+        raise TypeError('Incorrect type of variable other')
+
+    def __radd__(self, other):
+        """
+        add money of accountings
+        :param other:decimal.Decimal or accounting
+        :return:sum of None
+        """
+        if isinstance(other, decimal.Decimal):
+            return self._sum + other
+        elif isinstance(other, Accounting):
+            return self._sum + other._sum
+        raise TypeError('Incorrect type of variable other')
+
+    def __eq__(self, other):
+        """
+        return true if accountings are equal by money
+        :param other: other Accounting
+        :return: true if accountings are equal by money
+        """
+        if not isinstance(other, Accounting):
+            raise TypeError('Incorrect type of variable other')
+        return self._sum == other._sum
+
+    def __ne__(self, other):
+        """
+        return true if accountings are not equal by money
+        :param other: other Accounting
+        :return: true if accountings are not equal by money
+        """
+        return not self.__eq__(other)
+
     def set_datetime(self, date_time):
         """
         set datetime of payment
