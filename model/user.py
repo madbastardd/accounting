@@ -19,6 +19,50 @@ class User:
         check_money(_money)
         self._money = decimal.Decimal("%.2f" % _money)
 
+    def __format__(self, format_spec):
+        """
+        returns formatted string
+        :param format_spec: format specifier
+        :return: formatted string
+        """
+        res_format = 'User has %.2f\n' % self._money
+        header = ("Date     ", "Description   ", "Sum    ", "Profit (True/False)")
+        res_format += '%-25s %-20s %-8s %-15s\n' % header
+        for payment in self._payment_list:
+            res_format += format(payment) + '\n'
+        return res_format
+
+    def __bool__(self):
+        """
+        :return: true if User has money
+        """
+        return self._money > 0
+
+    def __len__(self):
+        """
+        :return: amount of User's payments
+        """
+        return len(self._payment_list)
+
+    def __getitem__(self, item):
+        """
+        returns payment with index of item
+        :param item: payment index
+        :return: payment
+        """
+        if not isinstance(item, int):
+            raise TypeError("Incorrect type of variable item")
+        if 0 <= item < len(self):
+            return self._payment_list[item]
+        raise IndexError("item index out of range")
+
+    def __iter__(self):
+        """
+        :return: payment
+        """
+        for payment in self._payment_list:
+            yield payment
+
     def add_payment(self, payment):
         """
         add new payment
