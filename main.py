@@ -1,24 +1,28 @@
-from controller.getter import main
-
-# def main():
-#     # user declaration
-#     # menu
-#     while True:
-#         key = module_view.menu()
-#         # if statement to check what menu item was chosen
-#         if key == '1':
-#             module_view.print_user_info(main_user)
-#             module_view.print_payments(main_user.get_payment_list())
-#         elif key == '2':
-#             account = module_view.input_accounting()
-#             main_user.add_payment(account)
-#         elif key == '3':
-#             main_user.clear_payments()
-#             main_user.set_money(0.00)
-#         elif key == '4':
-#             return None
-#         else:
-#             print("You've entered incorrect value")
+import configparser
+from controller.getter import main as main_get
+from controller.setter import main as main_set
 
 
-main()
+def get_type_controller(fname="data/defaults.cfg"):
+    """
+    choose controller type
+    :param fname: configure file name
+    :return: main function
+    """
+    # get configure file
+    parser = configparser.ConfigParser()
+    parser.read(fname)
+    # get type of controller
+    type = parser['controller']['type']
+    if type == 'set':
+        # setter controller
+        return main_set
+    if type == 'get':
+        # getter controller
+        return main_get
+    else:
+        # unknown controller
+        raise AttributeError('Incorrect controller type')
+
+
+get_type_controller()()

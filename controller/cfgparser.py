@@ -6,7 +6,7 @@ from serialization.syaml import read as yaml_read, write as yaml_write
 import configparser
 
 
-def cfgparse(fname="data/defaults.cfg"):
+def serialize_type(fname="data/defaults.cfg"):
     """
     parse configure file
     :param fname: configure file name

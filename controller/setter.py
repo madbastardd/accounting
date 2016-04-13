@@ -1,5 +1,5 @@
 from view.view import View
-from controller.cfgparser import cfgparse
+from controller.cfgparser import serialize_type
 from model.user import User
 
 
@@ -17,13 +17,14 @@ def get_key():
     # return result
     return key
 
+
 def main():
     """
     allows to append User's payments and clear them
     :return: nothing
     """
-    read = cfgparse()[0]
-    write = cfgparse()[1]
+    read = serialize_type()[0]
+    write = serialize_type()[1]
     main_user = read()
     if main_user is None:
         main_user = User(0.00)

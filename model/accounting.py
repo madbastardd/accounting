@@ -85,9 +85,10 @@ class Accounting:
         :param other: other Accounting
         :return: true if accountings are equal by money
         """
-        if not isinstance(other, Accounting):
-            raise TypeError('Incorrect type of variable other')
-        return self._sum == other._sum
+        try:
+            return self._sum == other._sum
+        except:
+            return False
 
     def __ne__(self, other):
         """
