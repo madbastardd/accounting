@@ -1,5 +1,6 @@
 import decimal
 from model.accounting import Accounting, check_money
+from model.payments_list import Payments
 
 
 class User:
@@ -14,7 +15,7 @@ class User:
         :param _money: user money
         :return: nothing
         """
-        self._payment_list = []
+        self._payments = Payments()
         # checks _money
         check_money(_money)
         self._money = decimal.Decimal("%.2f" % _money)
@@ -28,8 +29,7 @@ class User:
         res_format = 'User has %.2f\n' % self._money
         header = ("Date     ", "Description   ", "Sum    ", "Profit (True/False)")
         res_format += '%-25s %-20s %-8s %-15s\n' % header
-        for payment in self._payment_list:
-            res_format += format(payment) + '\n'
+        res_format += "{0}".format(self._payments)
         return res_format
 
     def __bool__(self):
@@ -38,41 +38,13 @@ class User:
         """
         return self._money > 0
 
-    def __len__(self):
-        """
-        :return: amount of User's payments
-        """
-        return len(self._payment_list)
-
-    def __getitem__(self, item):
-        """
-        returns payment with index of item
-        :param item: payment index
-        :return: payment
-        """
-        if not isinstance(item, int):
-            raise TypeError("Incorrect type of variable item")
-        if 0 <= item < len(self):
-            return self._payment_list[item]
-        raise IndexError("item index out of range")
-
-    def __iter__(self):
-        """
-        :return: payment
-        """
-        for payment in self._payment_list:
-            yield payment
-
     def add_payment(self, payment):
         """
         add new payment
         :param payment: payment to add (accounting.Accounting)
         :return: nothing
         """
-        if not isinstance(payment, Accounting):
-            # incorrect type
-            raise TypeError("Incorrect type of variable payment")
-        self._payment_list.append(payment)
+        self._payments.add_payment(payment)
         self._money += payment.get_sum()
 
     def remove_payment(self, payment):
@@ -81,12 +53,8 @@ class User:
         :param payment: payment to remove
         :return: nothing
         """
-        try:
-            self._payment_list.remove(payment)
-            self.add_money(-payment.get_sum())
-        except ValueError:
-            # payment not in list
-            pass
+        self._payments.remove_payment(payment)
+        self.add_money(-payment.get_sum())
 
     def add_money(self, add_money):
         """
@@ -113,8 +81,7 @@ class User:
         remove all payments
         :return: nothing
         """
-        while self._payment_list:
-            self._payment_list.pop()
+        self._payments.clear_payments()
 
     def get_money(self):
         """
@@ -126,4 +93,5 @@ class User:
         """
         :return: user payment list
         """
-        return self._payment_list
+        return self._payments.get_payment_list()
+

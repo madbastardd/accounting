@@ -1,6 +1,6 @@
 import configparser
-from controller.getter import main as main_get
-from controller.setter import main as main_set
+from controller.cui import main as main_set
+from controller.cons_main import main as cons_main
 
 
 def get_type_controller(fname="data/defaults.cfg"):
@@ -14,12 +14,12 @@ def get_type_controller(fname="data/defaults.cfg"):
     parser.read(fname)
     # get type of controller
     type = parser['controller']['type']
-    if type == 'set':
+    if type == 'std':
         # setter controller
         return main_set
-    if type == 'get':
-        # getter controller
-        return main_get
+    if type == 'console':
+        # console controller
+        return cons_main
     else:
         # unknown controller
         raise AttributeError('Incorrect controller type')

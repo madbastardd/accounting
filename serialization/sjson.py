@@ -3,6 +3,7 @@ user.User in JSON and deserialize
 user.User from file"""
 
 import json
+from model.payments_list import Payments
 from model.user import User
 import datetime
 from model.accounting import Accounting
@@ -21,6 +22,8 @@ class UserEncoder(json.JSONEncoder):
             # user object
             return {"money": o.get_money(),
                     "payment list": tuple(o.get_payment_list())}
+        if isinstance(o, Payments):
+            return [item for item in o.get_payment_list()]
         if isinstance(o, Accounting):
             # accounting object
             return {"datetime": o.get_datetime(),

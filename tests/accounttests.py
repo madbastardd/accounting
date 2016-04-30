@@ -51,3 +51,5 @@ class TestAccounting(unittest.TestCase):
         self.assertTrue(account1 != account2)
         self.assertEqual(account1 + account2, 5.50)
 
+if __name__ == '__main__':
+    unittest.main()

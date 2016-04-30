@@ -12,7 +12,8 @@ def get_key():
     key = input(""" Press:
                 1 - to append new payment
                 2 - clear all payments
-                3 - to exit
+                3 - to view all payments
+                4 - to exit
                 """)
     # return result
     return key
@@ -37,6 +38,8 @@ def main():
             main_user.clear_payments()
             main_user.set_money(0.00)
         elif key == '3':
+            View.print_payments(main_user)
+        elif key == '4':
             write(main_user)
             return None
         else:

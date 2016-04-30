@@ -43,6 +43,7 @@ class TestUser(unittest.TestCase):
         """
         user = User(3.00)
         payment = Accounting()
+        payment.set_sum(1.00)
         user.add_payment(payment)
         user.clear_payments()
         self.assertEqual(len(user.get_payment_list()), 0)
@@ -82,3 +83,6 @@ class TestUser(unittest.TestCase):
         for payment in user:
             sum += payment.get_sum()
         self.assertEqual(sum, 4)
+
+if __name__ == '__main__':
+    unittest.main()
